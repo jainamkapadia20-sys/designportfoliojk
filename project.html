@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #6A5CFF;
+            --black: #0B0B14;
+            --text-muted: #666666;
+            --studio-gradient: linear-gradient(135deg, #FDFCFF 0%, #F5F7FF 50%, #E9EDFF 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--studio-gradient);
+            background-attachment: fixed;
+            color: var(--black);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .project-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        .project-nav { margin-bottom: 60px; }
+        .back-link {
+            text-decoration: none;
+            color: var(--black);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: inline-flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+        .back-link:hover { color: var(--purple); transform: translateX(-5px); }
+
+        .project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .project-tools {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tool-box {
+            background: white;
+            border: 1.5px solid #E0E0E0;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--purple);
+            text-transform: uppercase;
+        }
+
+        .project-desc {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin-bottom: 80px;
+        }
+
+      /* THE AUTO-ARRANGE GALLERY */
+      .project-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 350px;
+            grid-auto-flow: dense; /* The magic: fills gaps automatically */
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+
+        .gallery-item {
+            background: #EEE;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+
+        .gallery-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This makes the video fill the grid cell flawlessly */
+    display: block;
+}
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Classes assigned automatically by the JS below */
+        .tall { grid-row: span 2; }
+        .wide { grid-column: span 2; }
+
+        .reflections-box {
+            background: white;
+            padding: 60px;
+            border-radius: 24px;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 20px 50px rgba(106, 92, 255, 0.05);
+        }
+
+        .reflections-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* --- TOOL BOX STYLING --- */
+        .project-tools {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .tool-box {
+            background: white;
+            border: 1.5px solid #E0E0E0;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #6A5CFF;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-gallery { grid-template-columns: 1fr; }
+            .wide, .tall { grid-column: span 1; grid-row: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="project-container">
+        <nav class="project-nav">
+            <a href="portfolio.html#work" class="back-link" onclick="prepareSnapBack()">← Back to Portfolio</a>
+        </nav>
+
+        <h1 class="project-title" id="display-title">Project Name</h1>
+        
+        <div class="project-tools" id="display-tools"></div>
+
+        <p class="project-desc" id="display-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+
+        <div class="project-gallery" id="display-gallery"></div>
+
+        <div class="reflections-box">
+            <h2>Reflections</h2>
+            <p id="display-reflections">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const projectData = {
+            'project-one': {
+                title: "Lorem Ipsum Project",
+                tools: ["Figma", "Pro", "Blender"],
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                reflections: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                images: [
+                    'image1.jpg', 
+                    'image2.jpg', 
+                    'image3.jpg',
+                    'image4.jpg'
+                ]
+            },
+            'project-two': {
+                title: "Spin a Story",
+                tools: ["Figma", "Fusion360", "Illustrator"],
+                desc: "Spin a Story is a physical-digital storytelling kit designed to make story creation more engaging and tactile. It combines a physical spinning wheel with an interactive digital interface, allowing users to create and share stories in a fun and innovative way.",
+                reflections: "Spin a Story was an exciting project that challenged me to blend physical and digital design seamlessly. One of the biggest challenges was ensuring that the physical spinning wheel provided a satisfying tactile experience while also integrating smoothly with the digital interface. I had to iterate on the design multiple times, testing different materials and mechanisms for the wheel to achieve the right balance of responsiveness and durability. Additionally, creating an intuitive digital interface that complemented the physical interaction required careful consideration of user flow and feedback. Overall, this project taught me a lot about the complexities of designing for both physical and digital mediums, and I'm proud of how Spin a Story turned out as a unique storytelling tool.",
+                images: [
+                    'spin1.png',
+                    'spin2.png', 
+                    'spin3.png', 
+                    'video.mp4',
+                    'spin4.png',
+                    'prototype.jpg'
+                ]
+            },
+            'project-three': {
+                title: "PLeated Dress Design",
+                tools: ["Ideation", "Teamwork", "Sketching"],
+                desc: "This project was a collaborative effort to design a pleated dress that combines traditional craftsmanship with modern aesthetics. The design process involved extensive ideation sessions, where we explored various concepts and silhouettes before settling on the final design. We focused on creating a dress that not only looks stunning but also offers comfort and versatility. The pleating technique we chose adds a dynamic element to the dress, allowing it to move gracefully while maintaining its structure. Throughout the project, we emphasized teamwork and open communication, which were crucial in bringing our vision to life.",
+                reflections: "Working on the pleated dress design was an enriching experience that highlighted the importance of collaboration and creativity in fashion design. One of the key challenges we faced was finding the right balance between aesthetics and functionality. We wanted the dress to be visually striking while also being comfortable to wear, which required us to experiment with different fabrics and pleating techniques. The ideation phase was particularly rewarding, as it allowed us to explore a wide range of ideas and receive feedback from each other, ultimately leading to a more refined and innovative design. This project reinforced my belief in the power of teamwork and the value of iterative design processes in creating something truly special.",
+                images: [
+                    'dress.jpg', 
+                    'dress1.jpg', 
+                    'dress2.jpg',
+                    'dress3.jpg'
+                ]
+            },
+            'project-four': {
+                title: "Solar Powered Resting Pod",
+                tools: ["Ideaton", "Paper Modelling", "Sketching"],
+                desc: "I worked on a project to design a solar-powered resting pod that provides a comfortable and sustainable space for people to relax in outdoor environments. The design process involved extensive ideation sessions, where I explored various concepts and materials to create a pod that is both functional and aesthetically pleasing. I focused on incorporating solar panels into the design to ensure that the pod can generate its own energy, making it an eco-friendly solution for outdoor relaxation. The final design features a sleek and modern aesthetic, with a focus on maximizing comfort and usability while minimizing environmental impact.",
+                reflections: "Working on the solar-powered resting pod was a rewarding experience that allowed me to combine my passion for sustainable design with my interest in creating functional and beautiful spaces. One of the biggest challenges I faced was finding the right balance between incorporating solar technology and maintaining a comfortable and inviting design. I had to experiment with different materials and configurations to ensure that the solar panels were effective without compromising the overall aesthetic of the pod. Additionally, I had to consider factors such as ventilation, shading, and user comfort, which required me to iterate on the design multiple times. This project taught me a lot about the complexities of designing for sustainability and reinforced my commitment to creating environmentally conscious solutions in my future work.",
+                images: [
+                    'solar1.jpg', 
+                    'solar2.jpg', 
+                    'solar3.jpg'
+                ]
+            },
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get('id');
+        const data = projectData[projectId];
+
+        if (data) {
+            // Set Text
+            document.getElementById('display-title').innerText = data.title;
+            document.getElementById('display-desc').innerText = data.desc;
+            document.getElementById('display-reflections').innerText = data.reflections;
+
+            // Set Tools
+            const toolContainer = document.getElementById('display-tools');
+            data.tools.forEach(tool => {
+                const span = document.createElement('span');
+                span.className = 'tool-box';
+                span.innerText = tool;
+                toolContainer.appendChild(span);
+            });
+
+            function prepareSnapBack() {
+    // This tells the main page: "I'm coming back, don't show the loader"
+    sessionStorage.setItem('skipLoader', 'true');
+}
+
+            // Set Gallery with Flawless Auto-Detect
+            const galleryContainer = document.getElementById('display-gallery');
+
+            data.images.forEach(fileSrc => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    
+    // Check if the file extension is a video format
+    const isVideo = fileSrc.match(/\.(mp4|webm|ogg)$/i);
+
+    if (isVideo) {
+        // VIDEO LOGIC
+        const video = document.createElement('video');
+        video.src = fileSrc;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true; // Chrome/Safari require muted for autoplay
+        video.playsInline = true;
+        video.setAttribute('webkit-playsinline', 'true');
+        
+        // Auto-size video for the grid once metadata loads
+        video.onloadedmetadata = function() {
+            const aspect = this.videoWidth / this.videoHeight;
+            if (aspect > 1.4) item.classList.add('wide');
+            else if (aspect < 0.8) item.classList.add('tall');
+        };
+
+        item.appendChild(video);
+    } else {
+        // IMAGE LOGIC (Your existing code)
+        const img = new Image();
+        img.src = fileSrc;
+        img.onload = function() {
+            const aspect = this.width / this.height;
+            if (aspect > 1.4) item.classList.add('wide');
+            else if (aspect < 0.8) item.classList.add('tall');
+            item.appendChild(img);
+        };
+    }
+
+    galleryContainer.appendChild(item);
+});
+
+        }
+    </script>
+</body>
+</html>
